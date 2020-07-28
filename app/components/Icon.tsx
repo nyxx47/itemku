@@ -7,7 +7,8 @@ interface IProps {
 
 const Icons = {
     search: require('../assets/images/search.png'),
-    notification: require('../assets/images/notification.png')
+    notification: require('../assets/images/notification.png'),
+    heart: require('../assets/images/heart.png')
 }
 
 const Icon: React.SFC<IProps> = props => {

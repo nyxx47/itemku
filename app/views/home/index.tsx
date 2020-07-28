@@ -13,23 +13,28 @@ import {
 
 import Icon from '../../components/Icon'
 import { IBanner, banners } from '../../mock/banner';
+import { categories, ICategory } from '../../mock/categories'
+import { products, IProduct } from '../../mock/products'
 
 const width = Dimensions.get('window').width
 
 interface IState{
     banners: IBanner[];
+    categories: ICategory[];
+    products: IProduct[];
 }
 
 class Home extends React.Component<{}, IState>{
 
     scrollX = new Animated.Value(0)
+    
     render(){
         let position = Animated.divide(this.scrollX, width);
         return(
             <>
             <StatusBar barStyle="dark-content" />
-            <ScrollView>
-                <ImageBackground resizeMode="stretch" source={require('../../assets/images/rounded-sq.png')} style={styles.header}>
+            <ScrollView style={{backgroundColor: '#ffffff'}}>
+                <ImageBackground resizeMode="cover" source={require('../../assets/images/rounded-sq.png')} style={styles.header}>
                     <View style={styles.navbar}>
                         <View>
                             <Text style={styles.logo}>LOGO</Text>
@@ -39,25 +44,26 @@ class Home extends React.Component<{}, IState>{
                             <Icon name="notification"/>
                         </View>
                     </View>
-                    <ScrollView 
-                    style={styles.banners} 
-                    horizontal={true} 
-                    showsHorizontalScrollIndicator={false} 
-                    scrollEventThrottle={16}
-                    pagingEnabled={true}
-                    onScroll={Animated.event( 
-                        [{ nativeEvent: { contentOffset: { x: this.scrollX } } }] 
-                    )}>
-                        {
-                            banners.map((banner, i) => (
-                                <View style={styles.banner}>
-                                    <Image source={banner.source} style={{width: '100%', height: '100%'}} resizeMode="cover" />
-                                </View>
-                            ))
-                        }
+                    <View style={styles.banners} >
+                        <ScrollView 
                         
-                    </ScrollView>
-                    <View
+                        horizontal={true} 
+                        showsHorizontalScrollIndicator={false} 
+                        scrollEventThrottle={16}
+                        pagingEnabled={true}
+                        onScroll={Animated.event( 
+                            [{ nativeEvent: { contentOffset: { x: this.scrollX } } }] 
+                        )}>
+                            {
+                                banners.map((banner, i) => (
+                                    <View style={styles.banner}>
+                                        <Image source={banner.source} style={{width: '100%', height: '100%'}} resizeMode="cover" />
+                                    </View>
+                                ))
+                            }
+                            
+                        </ScrollView>
+                        <View
                         style={styles.dots} 
                         >
                         {banners.map((_, i) => { 
@@ -81,8 +87,44 @@ class Home extends React.Component<{}, IState>{
                             );
                         })}
                         </View>
+                    </View>
                 </ImageBackground>
-                
+                <View style={styles.categories}>
+                    <ScrollView 
+                    horizontal={true} 
+                    showsHorizontalScrollIndicator={false} >
+                        {
+                            categories.map((category, i) => (
+                                <View style={styles.category} key={i}>
+                                    <Text style={styles.categoryText}>{category.title}</Text>
+                                </View>
+                            ))
+                        }
+                    </ScrollView>
+                </View>
+                <View style={styles.products}>
+                    {
+                        products.map(( product, i) => (
+                            <View style={styles.product} key={i}>
+                                <View style={{flexDirection: 'row', flex: 1}}>
+                                    <View style={styles.productImageWrapper}>
+                                        <Image source={product.image} resizeMode="contain" style={styles.productImage}/>
+                                    </View>
+                                    <View style={{justifyContent: 'space-between'}}>
+                                        <View>
+                                            <Text style={styles.productTitle}>{product.title}</Text>
+                                            <Text style={styles.productPrice}>Rp. {product.price}</Text>
+                                        </View>
+                                        <Text style={styles.productSold}>{product.sold}</Text>
+                                    </View>
+                                </View>
+                                <View>
+                                    <Icon name="heart"/>
+                                </View>
+                            </View>
+                        ))
+                    }
+                </View>
             </ScrollView>
             </>
         )
@@ -92,7 +134,8 @@ class Home extends React.Component<{}, IState>{
 const styles = StyleSheet.create({
     header: {
         width: '100%',
-        height: '100%',
+        height: 280,
+        paddingBottom: 10
     },
     navbar: {
         flexDirection: 'row',
@@ -114,12 +157,12 @@ const styles = StyleSheet.create({
     },
     banners: {
         width: '100%',
-        position: 'relative',
-        top: 40,
+        position: 'absolute',
+        top: '50%'
     },
     banner: {
         width: width - 90,
-        height: 200,
+        height: 180,
         marginLeft: 30,
         marginRight: 15,
         borderRadius: 10,
@@ -128,8 +171,72 @@ const styles = StyleSheet.create({
     dots: {
         flexDirection: 'row',
         position: 'relative',
-        top: 50,
+        top: 15,
         left: 30
+    },
+    categories:{
+        width: '100%',
+        marginTop: 100
+    },
+    category: {
+        marginLeft: 30,
+        marginRight: 15
+    },
+    categoryText:{
+        fontSize: 18,
+        color: '#1E1E1E'
+    },
+    products: {
+        width: '100%',
+        height: '100%',
+        marginTop: 30,
+        paddingLeft: 30,
+        paddingRight: 30
+    },
+    product: {
+        backgroundColor: '#ffffff',
+        width: '100%',
+        borderRadius: 10,
+        height: 100,
+        padding: 10,
+        marginBottom: 20,
+        flexDirection: 'row',
+        shadowColor: "#656565",
+        shadowOffset: {
+            width: 5,
+            height: 5,
+        },
+        shadowOpacity: 0.20,
+        shadowRadius: 8,
+
+        elevation: 8,
+    },
+    productImageWrapper: {
+        width: 85,
+        borderRadius: 10,
+        overflow: 'hidden',
+        marginRight: 10,
+
+    },
+    productImage: {
+        width: '100%',
+        height: '100%',
+    },
+    productTitle: {
+        fontWeight: '600',
+        fontSize: 18,
+        color: '#1E1E1E'
+    },
+    productPrice: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginTop: 4,
+        color: '#F38740'
+    },
+    productSold: {
+        fontSize: 14,
+        fontWeight: '500',
+        color: '#767676'
     }
 })
 
