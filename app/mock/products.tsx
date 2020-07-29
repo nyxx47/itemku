@@ -26,13 +26,13 @@ export const products: IProduct[] = [
                 sold: '999+ Produk terjual'
             },
             {
-                image: require('../assets/images/fighter.png'),
+                image: require('../assets/images/item2.png'),
                 title: "King of the Tank",
                 price: '85.000',
                 sold: '999+ Produk terjual'
             },
             {
-                image: require('../assets/images/fighter.png'),
+                image: require('../assets/images/item3.png'),
                 title: "King of the Assassin",
                 price: '120.000',
                 sold: '999+ Produk terjual'
@@ -40,16 +40,60 @@ export const products: IProduct[] = [
         ]
     },
     {
-        title: "Free Fire",
-        name: "ml",
+        title: "Fire Fire",
+        name: "ff",
         isActive: false,
         items: [
             {
-                image: require('../assets/images/fighter.png'),
+                image: require('../assets/images/item3.png'),
                 title: "King of the",
                 price: '100.000',
                 sold: '999+ Produk terjual'
             }
+        ]
+    },
+    {
+        title: "VoucherLyto",
+        name: "vl",
+        isActive: false,
+        items: [
+            {
+                image: require('../assets/images/item3.png'),
+                title: "King of the",
+                price: '100.000',
+                sold: '999+ Produk terjual'
+            },
+            {
+                image: require('../assets/images/fighter.png'),
+                title: "King of the fighter",
+                price: '100.000',
+                sold: '999+ Produk terjual'
+            },
+        ]
+    },
+    {
+        title: "Voucher Garena",
+        name: "vg",
+        isActive: false,
+        items: [
+            {
+                image: require('../assets/images/fighter.png'),
+                title: "King of the fighter",
+                price: '100.000',
+                sold: '999+ Produk terjual'
+            },
+            {
+                image: require('../assets/images/item3.png'),
+                title: "King of the",
+                price: '100.000',
+                sold: '999+ Produk terjual'
+            },
+            {
+                image: require('../assets/images/fighter.png'),
+                title: "King of the fighter",
+                price: '100.000',
+                sold: '999+ Produk terjual'
+            },
         ]
     },
 ]

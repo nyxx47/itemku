@@ -12,7 +12,7 @@ export const banners: IBanner[] = [
     },
     {
         title: "King of the figther",
-        source: require('../assets/images/moonlight.png')
+        source: require('../assets/images/mm2.png')
     },
     {
         title: "King of the figther",

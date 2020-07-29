@@ -51,7 +51,7 @@ class Categories extends React.Component<{}, IState>{
                         <View style={styles.categories}>
                                 <TouchableOpacity onPress={handleCategoriesClick}>
                                     <View style={styles.category}>
-                                        <Text style={styles.categoryText}>{props.heading}</Text>
+                                        <Text style={{fontWeight: props.name === activeName ? '700' : '400'}}>{props.heading}</Text>
                                     </View>
                                 </TouchableOpacity>
                         </View>
