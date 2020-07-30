@@ -4,17 +4,19 @@ import {
     View,
     Text,
     StatusBar,
-    StyleSheet,
     ImageBackground,
     Dimensions,
     Image,
-    Animated
+    Animated,
+    LogBox
   } from 'react-native';
 
 import Icon from '../../components/Icon'
 import { IBanner, banners } from '../../mock/banner';
-import { categories, ICategory } from '../../mock/categories'
 import { products, IProduct } from '../../mock/products'
+
+
+LogBox.ignoreAllLogs();
 
 import Categories from '../../components/categories'
 
@@ -24,16 +26,38 @@ const width = Dimensions.get('window').width
 
 interface IState{
     banners: IBanner[];
-    categories: ICategory[];
     products: IProduct[];
 }
 
 class Home extends React.Component<{}, IState>{
 
+    opacity = new Animated.Value(0)
     scrollX = new Animated.Value(0)
+    duration = 1200;
     
+    fadeIn = () => {
+        Animated.timing(this.opacity, {
+            toValue: 1,
+            duration: this.duration
+        }).start()
+    }
+    
+    
+    public componentDidMount(){
+        this.fadeIn()
+    }
+    
+
     render(){
         let position = Animated.divide(this.scrollX, width);
+        
+        const animatedStyles = [
+            styles.product,
+            {
+              opacity: this.opacity
+            }
+        ];
+
         return(
             <>
             <StatusBar barStyle="dark-content" />
@@ -50,7 +74,6 @@ class Home extends React.Component<{}, IState>{
                     </View>
                     <View style={styles.banners} >
                         <ScrollView 
-                        
                         horizontal={true} 
                         showsHorizontalScrollIndicator={false} 
                         scrollEventThrottle={16}
@@ -60,36 +83,36 @@ class Home extends React.Component<{}, IState>{
                         )}>
                             {
                                 banners.map((banner, i) => (
-                                    <View style={styles.banner}>
+                                    <View style={styles.banner} key={i}>
                                         <Image source={banner.source} style={{width: '100%', height: '100%'}} resizeMode="cover" />
                                     </View>
                                 ))
                             }
                             
                         </ScrollView>
-                        <View
-                        style={styles.dots} 
-                        >
-                        {banners.map((_, i) => { 
-                            let opacity = position.interpolate({
-                                inputRange: [i - 1, i, i + 1], 
-                                outputRange: [0.3, 1, 0.3], 
-                                extrapolate: 'clamp' 
-                            });
+                        <View style={styles.dots}>
+                            {
+                                banners.map((_, i) => { 
+                                    let opacity = position.interpolate({
+                                        inputRange: [i - 1, i, i + 1], 
+                                        outputRange: [0.3, 1, 0.3], 
+                                        extrapolate: 'clamp' 
+                                    });
 
-                            let width = position.interpolate({
-                                inputRange: [i - 1, i, i + 0], 
-                                outputRange: [10, 30, 10], 
-                                extrapolate: 'clamp' 
-                            });
-                            
-                            return (
-                            <Animated.View 
-                                key={i} 
-                                style={{ opacity, height: 8, width, backgroundColor: '#F38740', margin: 8, borderRadius: 5 }}
-                            />
-                            );
-                        })}
+                                    let width = position.interpolate({
+                                        inputRange: [i - 1, i, i + 0], 
+                                        outputRange: [10, 30, 10], 
+                                        extrapolate: 'clamp' 
+                                    });
+                                    
+                                    return (
+                                        <Animated.View 
+                                            key={i} 
+                                            style={{ opacity, height: 8, width, backgroundColor: '#F38740', margin: 8, borderRadius: 5 }}
+                                        />
+                                    );
+                                })
+                            }
                         </View>
                     </View>
                 </ImageBackground>
@@ -103,7 +126,7 @@ class Home extends React.Component<{}, IState>{
                                     
                                         {
                                             product.items.map(( item, i) => (
-                                                <View style={styles.product} key={i}>
+                                                <Animated.View style={animatedStyles} key={i}>
                                                     <View style={{flexDirection: 'row', flex: 1}}>
                                                         <View style={styles.productImageWrapper}>
                                                             <Image source={item.image} resizeMode="contain" style={styles.productImage}/>
@@ -119,14 +142,13 @@ class Home extends React.Component<{}, IState>{
                                                     <View>
                                                         <Icon name="heart"/>
                                                     </View>
-                                                </View>
+                                                </Animated.View>
                                             ))
                                         }
-                                            
-                                        
-                                    
+                                                             
                                 </View>
                             </Categories.Category>
+
                             ))
                         }
                     </Categories>
